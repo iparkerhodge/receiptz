@@ -17,7 +17,7 @@ export default BottomNav = () => {
                     <FontAwesomeIcon size={20} icon={faSearch} style={[t.textWhite]} />
                 </View>
             </Link>
-            <Link to="/addPhoto" style={[t.flex1]} component={TouchableOpacity}>
+            <Link to="/addCharge" style={[t.flex1]} component={TouchableOpacity}>
                 <View style={[t.p8, t.flex]}>
                     <FontAwesomeIcon size={20} icon={faPlusSquare} style={[t.textWhite]} />
                 </View>

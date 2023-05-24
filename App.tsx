@@ -11,7 +11,7 @@ import BottomNav from './components/BottomNav';
 // Pages
 import Home from './pages/Home';
 import Search from './pages/Search';
-import AddPhoto from './pages/AddPhoto';
+import AddCharge from './pages/AddCharge';
 import Likes from './pages/Likes';
 import MyPhotos from './pages/MyPhotos';
 import Header from './components/Header';
@@ -39,7 +39,7 @@ function App() {
       <Routes>
         <Route path='/' Component={Home} />
         <Route path='/search' Component={Search} />
-        <Route path='/addPhoto' Component={AddPhoto} />
+        <Route path='/addCharge' Component={AddCharge} />
         <Route path='/likes' Component={Likes} />
         <Route path='/myPhotos' Component={MyPhotos} />
       </Routes>
