@@ -5,9 +5,10 @@ import { t } from 'react-native-tailwindcss'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ZigzagLines from 'react-native-zigzag-lines';
 import * as ImagePicker from 'expo-image-picker'
-import { text } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { storageFileRef } from '../firebase'
+import useUploadFile from '../hooks/storage/useUploadFile';
 
 const AddCharge = () => {
     const dateCreated = new Date().toDateString()
@@ -15,9 +16,10 @@ const AddCharge = () => {
     initialCollectDate.setDate(initialCollectDate.getDate() + 1)
     const [width, setWidth] = useState(undefined)
     const [title, setTitle] = useState('')
-    const [image, setImage] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null)
     const [charges, setCharges] = useState([""])
     const [collectDate, setCollectDate] = useState(initialCollectDate)
+    const [uploadFile, uploading, snapshot, error] = useUploadFile();
 
     const handleDateChange = (_e, date) => setCollectDate(date)
 
@@ -38,6 +40,32 @@ const AddCharge = () => {
         vals.splice(i, 1)
         setCharges(vals)
     }
+    const uploadImage = async (file) => {
+        if (file) {
+            const blob = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    resolve(xhr.response);
+                };
+                xhr.onerror = function (e) {
+                    console.log(e);
+                    reject(new TypeError("Network request failed"));
+                };
+                xhr.responseType = "blob";
+                xhr.open("GET", file.uri, true);
+                xhr.send(null);
+            });
+
+            const imageRef = storageFileRef('test2')
+            const result = await uploadFile(imageRef, blob, {
+                contentType: 'image/jpeg'
+            });
+
+            blob.close();
+
+            return result.metadata
+        }
+    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -49,7 +77,8 @@ const AddCharge = () => {
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            setSelectedImage(result.assets[0].uri);
+            const res = uploadImage(result.assets[0])
         }
     }
 
@@ -88,7 +117,7 @@ const AddCharge = () => {
                             )
                         })}
                     </View>
-                    <FontAwesome.Button name='upload' style={[t.flexColReverse, t.p4]} iconStyle={[t.p2]} onPress={pickImage} backgroundColor={image ? '#48bb78' : '#1a202c'}>
+                    <FontAwesome.Button name='upload' style={[t.flexColReverse, t.p4]} iconStyle={[t.p2]} onPress={pickImage} backgroundColor={selectedImage ? '#48bb78' : '#1a202c'}>
                         Upload Evidence
                     </FontAwesome.Button>
                     <View style={{ alignItems: 'center', width: '100%' }}>
@@ -116,8 +145,8 @@ const AddCharge = () => {
                     <Text style={[t.textCenter, t.mY4, t.fontReceipt, t.text2xl, t.borderB2, t.borderBlack]}>{title || 'Title'}</Text>
                     <Text style={[t.mL5, t.mB4, t.fontReceipt]}>Created: {dateCreated}</Text>
                     <View style={[t.flex, t.itemsCenter, t.mT2]}>
-                        {image &&
-                            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+                        {selectedImage &&
+                            <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
                         }
                     </View>
                     <View style={[t.mT4, t.mL5, t.mR10]}>
