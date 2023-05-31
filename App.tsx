@@ -13,7 +13,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import AddCharge from './pages/AddCharge';
 import Likes from './pages/Likes';
-import MyPhotos from './pages/MyPhotos';
+import Account from './pages/Account';
 import Header from './components/Header';
 
 SplashScreen.preventAutoHideAsync()
@@ -41,7 +41,7 @@ function App() {
         <Route path='/search' Component={Search} />
         <Route path='/addCharge' Component={AddCharge} />
         <Route path='/likes' Component={Likes} />
-        <Route path='/myPhotos' Component={MyPhotos} />
+        <Route path='/account' Component={Account} />
       </Routes>
       <BottomNav />
     </SafeAreaView>

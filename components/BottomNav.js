@@ -27,7 +27,7 @@ export default BottomNav = () => {
                     <FontAwesomeIcon size={20} icon={faHeart} style={[t.textWhite]} />
                 </View>
             </Link>
-            <Link to="/myPhotos" style={[t.flex1]} component={TouchableOpacity}>
+            <Link to="/account" style={[t.flex1]} component={TouchableOpacity}>
                 <View style={[t.p8, t.flex]}>
                     <FontAwesomeIcon size={20} icon={faUser} style={[t.textWhite]} />
                 </View>
