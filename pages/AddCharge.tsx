@@ -10,9 +10,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { storageFileRef } from '../firebase'
 import useUploadFile from '../hooks/storage/useUploadFile';
 import axios from 'axios';
-import Constants from 'expo-constants'
 
-const api = Constants.manifest?.extra?.apiBaseUrl
+const api = `http://127.0.0.1:3000`;
 
 
 const AddCharge = () => {
@@ -96,12 +95,12 @@ const AddCharge = () => {
         const data = {
             title: title,
             accusee: accusee,
-            image_url: filename,
+            // image_url: filename,
             counts: charges,
             collection_date: collectDate
         }
 
-        console.log(data)
+        console.log(api)
         const _res = await axios.post(`${api}/charge`, { charge: data })
     }
 

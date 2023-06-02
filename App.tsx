@@ -15,6 +15,7 @@ import AddCharge from './pages/AddCharge';
 import Likes from './pages/Likes';
 import Account from './pages/Account';
 import Header from './components/Header';
+import UserProvider from './context/userContext';
 
 SplashScreen.preventAutoHideAsync()
 
@@ -35,15 +36,17 @@ function App() {
 
   return (
     <SafeAreaView style={[t.bgGray900, t.flex, t.hFull, t.wFull]} onLayout={onLayoutRootView}>
-      <Header />
-      <Routes>
-        <Route path='/' Component={Home} />
-        <Route path='/search' Component={Search} />
-        <Route path='/addCharge' Component={AddCharge} />
-        <Route path='/likes' Component={Likes} />
-        <Route path='/account' Component={Account} />
-      </Routes>
-      <BottomNav />
+      <UserProvider>
+        <Header />
+        <Routes>
+          <Route path='/' Component={Home} />
+          <Route path='/search' Component={Search} />
+          <Route path='/addCharge' Component={AddCharge} />
+          <Route path='/likes' Component={Likes} />
+          <Route path='/account' Component={Account} />
+        </Routes>
+        <BottomNav />
+      </UserProvider>
     </SafeAreaView>
   );
 }

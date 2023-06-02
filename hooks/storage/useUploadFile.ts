@@ -19,22 +19,6 @@ export type UploadFileHook = [
     StorageError | undefined
 ];
 
-// USAGE
-// const [uploadFile, uploading, snapshot, error] = useUploadFile();
-// uploadFile(ref, file, metadata): upload a file with attached metadata to the storage reference supplied
-// uploading: boolean
-// snapshot: storage.UploadTaskSnapshot
-// error: storage.StorageError
-
-// example:
-// const upload = async () => {
-//     if (file) {
-//         const result = await uploadFile(ref, file, {
-//             contentType: 'image/jpeg'
-//         });
-//     }
-// }
-
 export default (): UploadFileHook => {
     const [error, setError] = useState<StorageError>();
     const [uploading, setUploading] = useState<boolean>(false);
