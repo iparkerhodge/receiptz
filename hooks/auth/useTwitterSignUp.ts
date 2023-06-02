@@ -24,6 +24,7 @@ export type TwitterSignUpHook = [
     () => void,
     AuthSession.TokenResponse | undefined,
     boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
 ];
 
 export default (): TwitterSignUpHook => {
@@ -64,5 +65,5 @@ export default (): TwitterSignUpHook => {
         promptAsync({ useProxy: false })
     }
 
-    return [signUp, token, error];
+    return [signUp, token, error, setError];
 };

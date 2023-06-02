@@ -8,6 +8,7 @@ import * as AuthSession from 'expo-auth-session';
 import { User } from '../types/types'
 import { UserContext } from '../context/userContext'
 import useTwitterSignUp from '../hooks/auth/useTwitterSignUp'
+import TwitterProfile from '../components/account/TwitterProfile'
 
 if (Constants.manifest) {
     Constants.manifest.originalFullName = '@account/project_name'
@@ -20,7 +21,7 @@ WebBrowser.maybeCompleteAuthSession()
 
 const Account = () => {
     const { user, setUser } = useContext(UserContext) as UserContext
-    const [sign_up, token, error] = useTwitterSignUp()
+    const [sign_up, token, error, setError] = useTwitterSignUp()
 
     useEffect(() => {
         // if acces token request was successful
@@ -30,9 +31,11 @@ const Account = () => {
                 try {
                     const res = await axios.post(`${api}/sign_up`, { token: token })
                     const user = res.data
-                    setUser(user)
-                } catch (e) {
                     console.log(user)
+                    setUser(user)
+                    setError(false)
+                } catch (e) {
+                    setError(true)
                     throw new Error('there was a problem creating your account')
                 }
             }
@@ -45,18 +48,13 @@ const Account = () => {
         <View style={[t.bgWhite, t.hFull, t.itemsCenter]}>
             <View>
                 {user
-                    ? <Text>{user.twitterUsername}</Text>
+                    ? <TwitterProfile user={user} />
                     : <Text>no user is logged in</Text>
                 }
             </View>
             <View>
                 {error &&
                     <Text>There was an error signing you up. Please try again</Text>
-                }
-            </View>
-            <View>
-                {error &&
-                    <Text>there was an error signing you in</Text>
                 }
             </View>
             {user === undefined &&

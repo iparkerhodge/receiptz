@@ -9,15 +9,15 @@ export const storeUser = async (user: User) => {
     }
 }
 
-export const getUser = async (): Promise<User | null | undefined> => {
+export const getUser = async (): Promise<User | undefined> => {
     try {
-        let user: User | null
+        let user: User | undefined
         const value = await AsyncStorage.getItem('@user')
         if (value !== null) {
             // value previously stored
             user = JSON.parse(value)
         } else {
-            user = null
+            user = undefined
         }
         return user
     } catch (e) {

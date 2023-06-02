@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import { NativeRouter, Route, Routes } from 'react-router-native';
 import { t } from 'react-native-tailwindcss';
