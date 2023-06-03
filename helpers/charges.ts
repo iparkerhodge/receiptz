@@ -1,0 +1,130 @@
+import { Reducer } from "react"
+
+export interface ChargeState {
+    title?: string
+    dateCreated: string
+    accusee?: string
+    selectedImage?: string
+    filename?: string
+    charges: string[]
+    collectDate: Date
+}
+
+export const chargeReducer: Reducer<ChargeState, ChargeStateAction> = (prevState: ChargeState, action: ChargeStateAction) => action.updateState(prevState)
+
+export interface ChargeStateAction {
+    updateState: ChargeStateUpdate
+}
+
+export type ChargeStateUpdate = (prevState: ChargeState) => ChargeState
+
+export namespace Action {
+    export class Title implements ChargeStateAction {
+        title: string
+
+        readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+            return { ...prevState, title: this.title }
+        }
+
+        constructor(title: string) {
+            this.title = title
+        }
+    }
+    export class Accusee implements ChargeStateAction {
+        accusee: string
+
+        readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+            return { ...prevState, accusee: this.accusee }
+        }
+
+        constructor(accusee: string) {
+            this.accusee = accusee
+        }
+    }
+    export class SelectedImage implements ChargeStateAction {
+        selectedImage: string
+
+        readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+            return { ...prevState, selectedImage: this.selectedImage }
+        }
+
+        constructor(selectedImage: string) {
+            this.selectedImage = selectedImage
+        }
+    }
+    export class Filename implements ChargeStateAction {
+        filename: string
+
+        readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+            return { ...prevState, filename: this.filename }
+        }
+
+        constructor(filename: string) {
+            this.filename = filename
+        }
+    }
+    export namespace Charges {
+        export class AddCharge implements ChargeStateAction {
+            // adds a new blank charge to show input
+            readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+                const charges: string[] = prevState.charges
+                charges.push("")
+                return { ...prevState, charges: charges }
+            }
+        }
+        export class UpdateCharge implements ChargeStateAction {
+            index: number
+            charge: string
+
+            readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+                const charges = [...prevState.charges]
+                charges[this.index] = this.charge
+                return { ...prevState, charges: charges }
+            }
+
+            constructor(index: number, charge: string) {
+                this.index = index
+                this.charge = charge
+            }
+        }
+        export class RemoveCharge implements ChargeStateAction {
+            index: number
+
+            readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+                const charges = [...prevState.charges]
+                charges.splice(this.index, 1)
+                return { ...prevState, charges: charges }
+            }
+
+            constructor(index: number) {
+                this.index = index
+            }
+        }
+    }
+    export class CollectDate implements ChargeStateAction {
+        date: Date | undefined
+
+        readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+            return { ...prevState, collectDate: this.date }
+        }
+
+        constructor(date: Date | undefined) {
+            this.date = date
+        }
+    }
+}
+
+const initialCollectDate = new Date(2026, 1, 9)
+initialCollectDate.setDate(initialCollectDate.getDate() + 1)
+
+export default initialCollectDate
+
+export const initialChargeState: ChargeState = {
+    title: 'Zach is wrong about the Titans and Will Levis',
+    dateCreated: new Date().toDateString(),
+    accusee: 'Zach Wooten',
+    selectedImage: undefined,
+    filename: undefined,
+    charges: ["The Titans will be Super Bowl Contenders in 2025", "Will Levis will have a better career than Josh Allen"],
+    collectDate: initialCollectDate
+}
