@@ -1,4 +1,4 @@
-import { Reducer } from "react"
+import { Reducer, createContext, useContext, useReducer } from "react"
 
 export interface ChargeState {
     title?: string
@@ -102,13 +102,13 @@ export namespace Action {
         }
     }
     export class CollectDate implements ChargeStateAction {
-        date: Date | undefined
+        date: Date
 
         readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
             return { ...prevState, collectDate: this.date }
         }
 
-        constructor(date: Date | undefined) {
+        constructor(date: Date) {
             this.date = date
         }
     }

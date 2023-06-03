@@ -1,5 +1,4 @@
-import React, { Reducer, useEffect, useReducer, useState } from 'react'
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, { Reducer, useContext, useEffect, useReducer, useState } from 'react'
 import { View, Text, TextInput, Image, Button, ScrollView, TouchableOpacity } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -10,13 +9,20 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { storageFileRef } from '../firebase'
 import useUploadFile from '../hooks/storage/useUploadFile';
 import axios from 'axios';
-import Charge from '../components/charges/Charge';
+import ChargePreview from '../components/charges/ChargePreview';
 import { Action, ChargeState, ChargeStateAction, chargeReducer, initialChargeState } from '../helpers/charges';
+import ChargeTitle from '../components/charges/steps/ChargeTitle';
+import ChargeProvider from '../context/chargeContext';
+import ChargeAccusee from '../components/charges/steps/ChargeAccusee';
+import ChargeCharges from '../components/charges/steps/ChargeCharges';
+import ChargeUploadImage from '../components/charges/steps/ChargeUploadImage';
+import ChargeCollectDate from '../components/charges/steps/ChargeCollectDate';
 
 const api = `http://127.0.0.1:3000`;
 
 
 const AddCharge = () => {
+    const [step, setStep] = useState(0)
     const [state, dispatch] = useReducer<Reducer<ChargeState, ChargeStateAction>>(chargeReducer, initialChargeState)
     const [uploadFile, uploading, snapshot, error] = useUploadFile();
 
@@ -79,84 +85,50 @@ const AddCharge = () => {
         const _res = await axios.post(`${api}/charge`, { charge: data })
     }
 
+    const ChargeForm = () => {
+        switch (step) {
+            case 0:
+                return <ChargeTitle />
+            case 1:
+                return <ChargeAccusee />
+            case 2:
+                return <ChargeCharges />
+            case 3:
+                return <ChargeUploadImage />
+            case 4:
+                return <ChargeCollectDate />
+            default:
+                return <ChargeTitle />
+        }
+    }
+
     // TO DO: add error handling
 
     return (
         <ScrollView style={[t.bgWhite, t.hFull, t.pB20, t.flex, t.pT3]} contentContainerStyle={[t.itemsCenter]}>
-            {/* FORM  */}
-            <Text style={[t.fontReceipt, t.text3xl, t.mB3]}>Create a Receipt</Text>
-            <View style={[t.w3_4, t.flex, t.bgGray400, t.p3, t.rounded]}>
-                <View style={{ display: 'flex', gap: 12 }}>
-                    <TextInput
-                        placeholder='Title'
-                        style={[t.bgWhite, t.rounded, t.pY1, t.pX1]}
-                        value={state.title}
-                        onChangeText={title => dispatch(new Action.Title(title))}
-                    />
-                    <TextInput
-                        placeholder='Accusee'
-                        style={[t.bgWhite, t.rounded, t.pY1, t.pX1]}
-                        value={state.accusee}
-                        onChangeText={text => dispatch(new Action.Accusee(text))}
-                    />
-                    <View style={[t.flex]}>
-                        <Button title='Add Charges' onPress={_e => dispatch(new Action.Charges.AddCharge)} />
-                        {state.charges.map((charge, i) => {
-                            return (
-                                <View style={[t.flex1, t.mY1, t.flex, t.flexRow, t.itemsCenter]} key={`charge-${i}`}>
-                                    <TextInput
-                                        placeholder='Charge'
-                                        value={charge}
-                                        onChangeText={text => dispatch(new Action.Charges.UpdateCharge(i, text))}
-                                        style={[t.bgWhite, t.rounded, t.pY1, t.pX1, t.w5_6]}
-                                    />
-                                    <View style={[t.w1_6, t.pX2]}>
-                                        <TouchableOpacity
-                                            style={[t.bgGray900, t.flex, t.itemsCenter, t.hFull, t.justifyCenter, t.rounded]}
-                                            onPress={_e => dispatch(new Action.Charges.RemoveCharge(i))}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} size={10} color='white' />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            )
-                        })}
-                    </View>
-                    <FontAwesome.Button
-                        name='upload' style={[t.flexColReverse, t.p4]}
-                        iconStyle={[t.p2]}
-                        onPress={pickImage}
-                        backgroundColor={state.selectedImage ? '#48bb78' : '#1a202c'}
-                    >
-                        Upload Evidence
-                    </FontAwesome.Button>
-                    <View style={{ alignItems: 'center', width: '100%' }}>
-                        <Text style={[t.pB2]}>Date to Collect</Text>
-                        <DateTimePicker
-                            display="compact"
-                            mode="date"
-                            value={state.collectDate}
-                            onChange={handleDateChange}
-                        />
+            <ChargeProvider>
+                {/* FORM  */}
+                <Text style={[t.fontReceipt, t.text3xl, t.mB3]}>Create a Receipt</Text>
+                <View style={[t.mB10, t.p4, t.bgGray400, t.w3_4, t.rounded]}>
+                    <View style={{ height: 150, display: 'flex', justifyContent: 'space-between' }}>
+                        <ChargeForm />
+                        <View style={[t.flex, t.flexRow, t.justifyBetween, t.wFull]}>
+                            <Button title='Prev' onPress={() => setStep(step - 1)} disabled={step === 0} />
+                            <Button title='Next' onPress={() => setStep(step + 1)} disabled={step === 4} />
+                        </View>
                     </View>
                 </View>
-            </View>
-            {/* Preview  */}
-            <View style={[t.mT10, t.bgGray400, t.wFull, t.hFull, t.pT4, t.flex, t.itemsCenter, t.pB20]}>
-                <Charge
-                    title={state.title}
-                    dateCreated={state.dateCreated}
-                    accusee={state.accusee}
-                    selectedImage={state.selectedImage}
-                    charges={state.charges}
-                />
-                <View style={[t.mT6]}>
-                    <Text>Remind me to collect on {state.collectDate?.toDateString()}</Text>
+                {/* Preview  */}
+                <View style={[t.mT10, t.bgGray400, t.wFull, t.hFull, t.pT4, t.flex, t.itemsCenter, t.pB20]}>
+                    <ChargePreview />
+                    <View style={[t.mT6]}>
+                        <Text>Remind me to collect on {state.collectDate?.toDateString()}</Text>
+                    </View>
+                    <View style={[t.mB20]}>
+                        <Button title='Save' onPress={handleSave} />
+                    </View>
                 </View>
-                <View>
-                    <Button title='Save' onPress={handleSave} />
-                </View>
-            </View>
+            </ChargeProvider>
         </ScrollView >
     )
 }
