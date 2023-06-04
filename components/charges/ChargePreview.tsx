@@ -3,8 +3,10 @@ import { Image, Text, View } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import ZigzagLines from 'react-native-zigzag-lines'
 import { ChargeContext } from '../../context/chargeContext'
+import { UserContext } from '../../context/userContext'
 
 const ChargePreview: React.FC = () => {
+    const { user } = useContext(UserContext) as UserContext
     const [width, setWidth] = useState<number | undefined>(undefined)
     const { state } = useContext(ChargeContext)
     return (
@@ -41,7 +43,7 @@ const ChargePreview: React.FC = () => {
             </View>
             <View style={[t.mY5, t.flex, t.itemsCenter]}>
                 <Text style={[t.fontReceipt]}>Vendor:</Text>
-                <Text style={[t.fontReceipt]}>Parker Hodge</Text>
+                <Text style={[t.fontReceipt]}>{user?.twitterName || 'Your Name'}</Text>
             </View>
             <View style={[t.mT6, t.mB4]}>
                 <Text style={[t.mX2, t.fontReceipt, t.textCenter]}>Processed by <Text style={[t.underline]}>Receiptz</Text>, the app to track bets, wagers, and absurd predictions</Text>

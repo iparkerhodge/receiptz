@@ -120,11 +120,11 @@ initialCollectDate.setDate(initialCollectDate.getDate() + 1)
 export default initialCollectDate
 
 export const initialChargeState: ChargeState = {
-    title: 'Zach is wrong about the Titans and Will Levis',
+    title: 'Title',
     dateCreated: new Date().toDateString(),
-    accusee: 'Zach Wooten',
+    accusee: 'Person',
     selectedImage: undefined,
     filename: undefined,
-    charges: ["The Titans will be Super Bowl Contenders in 2025", "Will Levis will have a better career than Josh Allen"],
+    charges: ["Include the claims made here"],
     collectDate: initialCollectDate
 }

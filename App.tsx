@@ -16,6 +16,13 @@ import Likes from './pages/Likes';
 import Account from './pages/Account';
 import Header from './components/Header';
 import UserProvider from './context/userContext';
+import ChargeProvider from './context/chargeContext';
+
+const AddChargeWithProvider = () => (
+  <ChargeProvider>
+    <AddCharge />
+  </ChargeProvider>
+)
 
 SplashScreen.preventAutoHideAsync()
 
@@ -41,7 +48,7 @@ function App() {
         <Routes>
           <Route path='/' Component={Home} />
           <Route path='/search' Component={Search} />
-          <Route path='/addCharge' Component={AddCharge} />
+          <Route path='/addCharge' Component={AddChargeWithProvider} />
           <Route path='/likes' Component={Likes} />
           <Route path='/account' Component={Account} />
         </Routes>

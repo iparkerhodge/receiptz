@@ -52,16 +52,24 @@ const ChargeUploadImage: React.FC = () => {
             dispatch(new Action.Filename(res?.name || ""))
         }
     }
+
+    // TO DO: allow user to change image
+
     return (
-        <View style={[t.mX2, t.flex, t.itemsCenter, t.wFull]}>
-            <FontAwesome.Button
-                name='upload' style={[t.flexColReverse, t.p4]}
-                iconStyle={[t.p2]}
-                onPress={pickImage}
-                backgroundColor={state.selectedImage ? '#48bb78' : '#1a202c'}
-            >
-                Upload Evidence
-            </FontAwesome.Button>
+        <View style={{ width: '100%', height: 250, paddingHorizontal: 20, display: 'flex', alignItems: 'center' }}>
+            <View style={{ paddingTop: 10, width: '100%', display: 'flex', alignItems: 'center' }}>
+                <Text style={[t.mB1, t.fontBold]}>Upload Evidence</Text>
+                <View style={{ paddingTop: 20 }}>
+                    <FontAwesome.Button
+                        name='upload' style={{ display: 'flex', flexDirection: 'column-reverse', padding: 20 }}
+                        iconStyle={{ paddingTop: 8 }}
+                        onPress={pickImage}
+                        backgroundColor={state.selectedImage ? '#48bb78' : '#1a202c'}
+                    >
+                        Upload an Image
+                    </FontAwesome.Button>
+                </View>
+            </View>
         </View>
     )
 }

@@ -17,14 +17,16 @@ const ChargeCollectDate: React.FC = () => {
     }
 
     return (
-        <View style={{ alignItems: 'center', width: '100%' }}>
-            <Text style={[t.pB2]}>Date to Collect</Text>
-            <DateTimePicker
-                display="compact"
-                mode="date"
-                value={state.collectDate}
-                onChange={handleDateChange}
-            />
+        <View style={{ width: '100%', height: 250, paddingHorizontal: 20, display: 'flex', alignItems: 'center' }}>
+            <View style={{ paddingTop: 10, width: '100%', display: 'flex', alignItems: 'center' }}>
+                <Text style={[t.mB2, t.fontBold]}>Date to Collect</Text>
+                <DateTimePicker
+                    display="compact"
+                    mode="date"
+                    value={state.collectDate}
+                    onChange={handleDateChange}
+                />
+            </View>
         </View>
     )
 }
