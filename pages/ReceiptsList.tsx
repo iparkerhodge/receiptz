@@ -23,7 +23,7 @@ const Receipts = () => {
 
     return (
         <ScrollView style={[t.wFull, t.pT4]} contentContainerStyle={[t.flex, t.itemsCenter]}>
-            {receipts.map((r: Receipt, i: number) => <ReceiptListItem receipt={r} key={i} />)}
+            {receipts.map((r: Receipt, i: number) => <ReceiptListItem receipt={r} index={i} key={i} />)}
         </ScrollView>
     )
 }

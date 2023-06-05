@@ -7,9 +7,10 @@ import { getDownloadURL, ref } from 'firebase/storage'
 
 interface ReceiptListItemProps {
     receipt: Receipt
+    index: number
 }
 
-const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt }) => {
+const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index }) => {
     const [image, setImage] = useState<string | undefined>()
 
     useEffect(() => {
