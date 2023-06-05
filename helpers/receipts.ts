@@ -1,14 +1,20 @@
+import axios, { AxiosResponse } from "axios"
 import { Reducer } from "react"
+import { Receipt, User } from "../types/types"
 
+
+// STATE
 export interface ReceiptState {
-    title?: string
+    title: string
     dateCreated: string
-    accusee?: string
+    accusee: string
     selectedImage?: string
     filename?: string
     claims: string[]
     collectDate: Date
 }
+
+// REDUCER
 
 export const receiptReducer: Reducer<ReceiptState, ReceiptStateAction> = (prevState: ReceiptState, action: ReceiptStateAction) => action.updateState(prevState)
 
@@ -17,6 +23,8 @@ export interface ReceiptStateAction {
 }
 
 export type ReceiptStateUpdate = (prevState: ReceiptState) => ReceiptState
+
+// REDUCER ACTIONS
 
 export namespace Action {
     export class Title implements ReceiptStateAction {
@@ -127,4 +135,22 @@ export const initialReceiptState: ReceiptState = {
     filename: undefined,
     claims: ["Include the claims made here"],
     collectDate: initialCollectDate
+}
+
+export interface ReceiptData {
+    title: string
+    accusee: string
+    claims: string[]
+    collectionDate: string
+    imageUrl?: string
+    userId: number
+}
+
+// REQUESTS
+
+const api = `http://127.0.0.1:3000`
+
+export const submitData = async (data: ReceiptData) => {
+    const res = await axios.post<Receipt>(`${api}/receipts`, { receipt: data })
+    return res
 }

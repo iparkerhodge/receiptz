@@ -59,7 +59,7 @@ const ReceiptUploadImage: React.FC = () => {
         if (!result.canceled) {
             dispatch(new Action.SelectedImage(result.assets[0].uri))
             const res = await uploadImage(result.assets[0])
-            dispatch(new Action.Filename(res?.name || ""))
+            dispatch(new Action.Filename(res?.fullPath || ""))
         }
     }
 

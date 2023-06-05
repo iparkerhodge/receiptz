@@ -18,8 +18,8 @@ const ReceiptCollectDate: React.FC = () => {
 
     return (
         <View style={{ width: '100%', height: 250, paddingHorizontal: 20, display: 'flex', alignItems: 'center' }}>
-            <View style={{ paddingTop: 10, width: '100%', display: 'flex', alignItems: 'center' }}>
-                <Text style={[t.mB2, t.fontBold]}>Date to Collect</Text>
+            <View style={{ paddingTop: 10, width: '100%', display: 'flex', alignItems: 'center', }}>
+                <Text style={[t.mB2, t.fontBold, t.textCenter]}>What date would you like to be reminded about this receipt?</Text>
                 <DateTimePicker
                     display="compact"
                     mode="date"

@@ -12,7 +12,7 @@ import BottomNav from './components/BottomNav';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import AddReceipt from './pages/AddReceipt';
-import Likes from './pages/Likes';
+import Receipts from './pages/ReceiptsList';
 import Account from './pages/Account';
 import Header from './components/Header';
 import UserProvider from './context/userContext';
@@ -44,7 +44,7 @@ function App() {
             <Route path='/' Component={Home} />
             <Route path='/search' Component={Search} />
             <Route path='/addReceipt' Component={AddReceipt} />
-            <Route path='/likes' Component={Likes} />
+            <Route path='/receipts' Component={Receipts} />
             <Route path='/account' Component={Account} />
           </Routes>
           <BottomNav />

@@ -8,3 +8,14 @@ export interface User {
     accessTokenIssuedAt: string
     refreshToken: string
 }
+
+export interface Receipt {
+    id: number
+    title: string
+    accusee: string
+    claims: string[]
+    collectionDate: Date
+    imageUrl?: string
+    userId: number
+    createdAt: Date
+}

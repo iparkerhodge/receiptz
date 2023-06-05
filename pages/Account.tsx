@@ -1,5 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { View, Text, TextInput, Button, Platform, TouchableOpacity } from 'react-native'
+import React, { useContext, useEffect } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import Constants from 'expo-constants'
 import axios from 'axios'

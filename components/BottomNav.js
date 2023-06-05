@@ -1,4 +1,4 @@
-import { faHeart, faHome, faPlusSquare, faSearch, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faHeart, faHome, faPlusSquare, faReceipt, faSearch, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome"
 import { t } from "react-native-tailwindcss"
 import { Image, TouchableOpacity, View } from "react-native"
@@ -25,9 +25,9 @@ export default BottomNav = () => {
                     <FontAwesomeIcon size={20} icon={faPlusSquare} style={[t.textWhite]} />
                 </View>
             </Link>
-            <Link to="/likes" style={[t.flex1]} component={TouchableOpacity}>
+            <Link to="/receipts" style={[t.flex1]} component={TouchableOpacity}>
                 <View style={[t.p8, t.flex, t.itemsCenter]}>
-                    <FontAwesomeIcon size={20} icon={faHeart} style={[t.textWhite]} />
+                    <FontAwesomeIcon size={20} icon={faReceipt} style={[t.textWhite]} />
                 </View>
             </Link>
             <Link to="/account" style={[t.flex1]} component={TouchableOpacity}>
