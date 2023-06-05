@@ -11,12 +11,12 @@ import BottomNav from './components/BottomNav';
 // Pages
 import Home from './pages/Home';
 import Search from './pages/Search';
-import AddCharge from './pages/AddCharge';
+import AddReceipt from './pages/AddReceipt';
 import Likes from './pages/Likes';
 import Account from './pages/Account';
 import Header from './components/Header';
 import UserProvider from './context/userContext';
-import ChargeProvider from './context/chargeContext';
+import ReceiptProvider from './context/receiptContext';
 
 SplashScreen.preventAutoHideAsync()
 
@@ -38,17 +38,17 @@ function App() {
   return (
     <SafeAreaView style={[t.bgBlack, t.flex, t.hFull, t.wFull]} onLayout={onLayoutRootView}>
       <UserProvider>
-        <ChargeProvider>
+        <ReceiptProvider>
           <Header />
           <Routes>
             <Route path='/' Component={Home} />
             <Route path='/search' Component={Search} />
-            <Route path='/addCharge' Component={AddCharge} />
+            <Route path='/addReceipt' Component={AddReceipt} />
             <Route path='/likes' Component={Likes} />
             <Route path='/account' Component={Account} />
           </Routes>
           <BottomNav />
-        </ChargeProvider>
+        </ReceiptProvider>
       </UserProvider>
     </SafeAreaView>
   );

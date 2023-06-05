@@ -3,19 +3,20 @@ import { View, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-
 import { t } from 'react-native-tailwindcss'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faArrowRight, faCircle, faCircleDot, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
-import ChargePreview from '../components/charges/ChargePreview';
-import ChargeTitle from '../components/charges/steps/ChargeTitle';
-import ChargeAccusee from '../components/charges/steps/ChargeAccusee';
-import ChargeCharges from '../components/charges/steps/ChargeCharges';
-import ChargeUploadImage from '../components/charges/steps/ChargeUploadImage';
-import ChargeCollectDate from '../components/charges/steps/ChargeCollectDate';
+import ReceiptPreview from '../components/receipts/ReceiptPreview';
+import ReceiptTitle from '../components/receipts/steps/ReceiptTitle';
+import ReceiptAccusee from '../components/receipts/steps/ReceiptAccusee';
+import ReceiptClaims from '../components/receipts/steps/ReceiptClaims';
+import ReceiptUploadImage from '../components/receipts/steps/ReceiptUploadImage';
+import ReceiptCollectDate from '../components/receipts/steps/ReceiptCollectDate';
 import { Modal } from 'react-native';
+import ReceiptSave from '../components/receipts/steps/ReceiptSave';
 
 
 const api = `http://127.0.0.1:3000`;
 
 
-const AddCharge = () => {
+const AddReceipt = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const [step, setStep] = useState(0)
 
@@ -28,23 +29,25 @@ const AddCharge = () => {
 
     const handleModalClose = () => setModalOpen(false)
 
-    const incrementStep = () => setStep((step + 1) % 5)
-    const decrementStep = () => setStep((step - 1 + 5) % 5)
+    const incrementStep = () => setStep((step + 1) % 6)
+    const decrementStep = () => setStep((step - 1 + 6) % 6)
 
-    const ChargeForm = () => {
+    const ReceiptForm = () => {
         switch (step) {
             case 0:
-                return <ChargeTitle />
+                return <ReceiptTitle />
             case 1:
-                return <ChargeAccusee />
+                return <ReceiptAccusee />
             case 2:
-                return <ChargeCharges />
+                return <ReceiptClaims />
             case 3:
-                return <ChargeUploadImage />
+                return <ReceiptUploadImage />
             case 4:
-                return <ChargeCollectDate />
+                return <ReceiptCollectDate />
+            case 5:
+                return <ReceiptSave />
             default:
-                return <ChargeTitle />
+                return <ReceiptTitle />
         }
     }
 
@@ -54,7 +57,7 @@ const AddCharge = () => {
         <View style={[t.hFull, t.bgBlack, t.flex, t.itemsCenter, t.pT10]}>
             <ScrollView style={[t.wFull]} contentContainerStyle={[t.flex, t.itemsCenter]}>
                 <TouchableOpacity onPress={() => setModalOpen(true)}>
-                    <ChargePreview />
+                    <ReceiptPreview />
                 </TouchableOpacity>
             </ScrollView>
             {modalOpen &&
@@ -70,7 +73,7 @@ const AddCharge = () => {
                     </View>
                     <View style={{ paddingBottom: 75 }}>
                         {/* FORM */}
-                        <ChargeForm />
+                        <ReceiptForm />
                         {/* FORM CONTROLS */}
                         <View style={[t.wFull, t.flex, t.flexRow, t.justifyEvenly, t.itemsCenter, t.mT4]}>
                             <TouchableOpacity onPress={decrementStep} delayPressIn={0}>
@@ -83,6 +86,7 @@ const AddCharge = () => {
                                 <FontAwesomeIcon icon={step === 2 ? faCircleDot : faCircle} size={8} />
                                 <FontAwesomeIcon icon={step === 3 ? faCircleDot : faCircle} size={8} />
                                 <FontAwesomeIcon icon={step === 4 ? faCircleDot : faCircle} size={8} />
+                                <FontAwesomeIcon icon={step === 5 ? faCircleDot : faCircle} size={8} />
                             </View>
                             <TouchableOpacity onPress={incrementStep} delayPressIn={0}>
                                 <FontAwesomeIcon icon={faArrowRight} size={20} />
@@ -94,4 +98,4 @@ const AddCharge = () => {
         </View>
     )
 }
-export default AddCharge
+export default AddReceipt

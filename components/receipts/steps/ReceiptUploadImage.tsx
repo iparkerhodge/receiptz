@@ -1,9 +1,8 @@
 import React, { useContext } from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { t } from 'react-native-tailwindcss'
-import { ChargeContext } from '../../../context/chargeContext'
-import { Action } from '../../../helpers/charges'
-import { inputStyle } from './Styles'
+import { ReceiptContext } from '../../../context/receiptContext'
+import { Action } from '../../../helpers/receipts'
 import * as ImagePicker from 'expo-image-picker'
 import useUploadFile from '../../../hooks/storage/useUploadFile'
 import { storageFileRef } from '../../../firebase'
@@ -11,9 +10,9 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { deleteObject } from 'firebase/storage'
 import { UserContext } from '../../../context/userContext'
 
-const ChargeUploadImage: React.FC = () => {
+const ReceiptUploadImage: React.FC = () => {
     const { user } = useContext(UserContext) as UserContext
-    const { state, dispatch } = useContext(ChargeContext)
+    const { state, dispatch } = useContext(ReceiptContext)
     const [uploadFile, uploading, snapshot, error] = useUploadFile();
 
     // TO DO: add error handling
@@ -41,10 +40,11 @@ const ChargeUploadImage: React.FC = () => {
         }
     }
 
+    // TO DO: what happens if you upload an image and you're not logged in?
     const pickImage = async () => {
         // if an image is seleced, delete that image than
         if (state.filename) {
-            const imageRef = storageFileRef(state.filename)
+            const imageRef = storageFileRef(`@${user?.twitterUsername}/${state.filename}`)
             const _res = await deleteObject(imageRef)
         }
 
@@ -84,4 +84,4 @@ const ChargeUploadImage: React.FC = () => {
     )
 }
 
-export default ChargeUploadImage
+export default ReceiptUploadImage

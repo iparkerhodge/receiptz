@@ -2,13 +2,13 @@ import React, { useContext, useState } from 'react'
 import { Image, Text, View } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import ZigzagLines from 'react-native-zigzag-lines'
-import { ChargeContext } from '../../context/chargeContext'
+import { ReceiptContext } from '../../context/receiptContext'
 import { UserContext } from '../../context/userContext'
 
-const ChargePreview: React.FC = () => {
+const ReceiptPreview: React.FC = () => {
     const { user } = useContext(UserContext) as UserContext
     const [width, setWidth] = useState<number | undefined>(undefined)
-    const { state } = useContext(ChargeContext)
+    const { state } = useContext(ReceiptContext)
     return (
         <View style={[t.w3_4, t.bgWhite]} onLayout={e => setWidth(e.nativeEvent.layout.width)}>
             {typeof width == 'number' &&
@@ -28,16 +28,16 @@ const ChargePreview: React.FC = () => {
                 }
             </View>
             <View style={[t.mT4, t.mL5, t.mR10]}>
-                {state.charges?.map(((charge, i) => {
+                {state.claims?.map(((claim: string, i: number) => {
                     return (
-                        <View style={[t.flex, t.flexRow, t.mY1]} key={`charge-preview-${i}`}>
+                        <View style={[t.flex, t.flexRow, t.mY1]} key={`receipt-preview-${i}`}>
                             <Text style={[t.mR3, t.fontReceipt]}>1</Text>
-                            <Text style={[t.fontReceipt]}>{charge}</Text>
+                            <Text style={[t.fontReceipt]}>{claim}</Text>
                         </View>
                     )
                 }))}
                 <Text>-------------</Text>
-                {state.charges && state.charges.length > 0 && <Text style={[t.fontReceipt]}>Total: {state.charges.length}</Text>}
+                {state.claims && state.claims.length > 0 && <Text style={[t.fontReceipt]}>Total: {state.claims.length}</Text>}
             </View>
             <View style={[t.mT2, t.mL5]}>
                 <Text style={[t.fontReceipt]}>Cardholder name: {state.accusee}</Text>
@@ -62,4 +62,4 @@ const ChargePreview: React.FC = () => {
     )
 }
 
-export default ChargePreview
+export default ReceiptPreview

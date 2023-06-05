@@ -20,7 +20,7 @@ export default BottomNav = () => {
                     <FontAwesomeIcon size={20} icon={faSearch} style={[t.textWhite]} />
                 </View>
             </Link>
-            <Link to="/addCharge" style={[t.flex1]} component={TouchableOpacity}>
+            <Link to="/addReceipt" style={[t.flex1]} component={TouchableOpacity}>
                 <View style={[t.p8, t.flex, t.itemsCenter]}>
                     <FontAwesomeIcon size={20} icon={faPlusSquare} style={[t.textWhite]} />
                 </View>

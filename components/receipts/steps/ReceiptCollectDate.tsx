@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { t } from 'react-native-tailwindcss'
-import { ChargeContext } from '../../../context/chargeContext'
-import { Action } from '../../../helpers/charges'
+import { ReceiptContext } from '../../../context/receiptContext'
+import { Action } from '../../../helpers/receipts'
 import { inputStyle } from './Styles'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 
-const ChargeCollectDate: React.FC = () => {
-    const { state, dispatch } = useContext(ChargeContext)
+const ReceiptCollectDate: React.FC = () => {
+    const { state, dispatch } = useContext(ReceiptContext)
 
     const handleDateChange = (_e: DateTimePickerEvent, date?: Date) => {
         if (date) {
@@ -31,4 +31,4 @@ const ChargeCollectDate: React.FC = () => {
     )
 }
 
-export default ChargeCollectDate
+export default ReceiptCollectDate

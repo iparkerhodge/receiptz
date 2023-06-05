@@ -250,7 +250,8 @@ module.exports = {
         'monospace',
       ],
       receipt: [
-        'receipt'
+        'receipt',
+        'serif'
       ]
     },
     fontSize: {
