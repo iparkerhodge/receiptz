@@ -9,7 +9,7 @@ interface ReceiptListItemProps {
     receipt: Receipt
 }
 
-const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index }) => {
+const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt }) => {
     const [image, setImage] = useState<string | undefined>()
 
     useEffect(() => {
