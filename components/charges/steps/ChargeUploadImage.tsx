@@ -8,11 +8,15 @@ import * as ImagePicker from 'expo-image-picker'
 import useUploadFile from '../../../hooks/storage/useUploadFile'
 import { storageFileRef } from '../../../firebase'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { deleteObject } from 'firebase/storage'
+import { UserContext } from '../../../context/userContext'
 
 const ChargeUploadImage: React.FC = () => {
+    const { user } = useContext(UserContext) as UserContext
     const { state, dispatch } = useContext(ChargeContext)
     const [uploadFile, uploading, snapshot, error] = useUploadFile();
 
+    // TO DO: add error handling
     const uploadImage = async (file: ImagePicker.ImagePickerAsset) => {
         if (file) {
             const blob: Blob = await new Promise((resolve, reject) => {
@@ -28,7 +32,7 @@ const ChargeUploadImage: React.FC = () => {
                 xhr.send(null);
             });
 
-            const imageRef = storageFileRef(new Date().toISOString()) // TO DO: change file name to user/datetime
+            const imageRef = storageFileRef(`@${user?.twitterUsername}/${new Date().toISOString()}`) // TO DO: change file name to user/datetime
             const result = await uploadFile(imageRef, blob, {
                 contentType: 'image/jpeg'
             });
@@ -38,6 +42,12 @@ const ChargeUploadImage: React.FC = () => {
     }
 
     const pickImage = async () => {
+        // if an image is seleced, delete that image than
+        if (state.filename) {
+            const imageRef = storageFileRef(state.filename)
+            const _res = await deleteObject(imageRef)
+        }
+
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,

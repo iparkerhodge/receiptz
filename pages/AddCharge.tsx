@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faArrowRight, faCircle, faCircleDot, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
@@ -52,9 +52,11 @@ const AddCharge = () => {
 
     return (
         <View style={[t.hFull, t.bgBlack, t.flex, t.itemsCenter, t.pT10]}>
-            <TouchableOpacity onPress={() => setModalOpen(true)}>
-                <ChargePreview />
-            </TouchableOpacity>
+            <ScrollView style={[t.wFull]} contentContainerStyle={[t.flex, t.itemsCenter]}>
+                <TouchableOpacity onPress={() => setModalOpen(true)}>
+                    <ChargePreview />
+                </TouchableOpacity>
+            </ScrollView>
             {modalOpen &&
                 <View style={[t.wFull, t.hFull, t.bgBlack, t.opacity25, t.absolute, t.top0]} />
             }
