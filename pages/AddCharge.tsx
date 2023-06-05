@@ -51,7 +51,7 @@ const AddCharge = () => {
     // TO DO: add error handling
 
     return (
-        <View style={[t.hFull, t.bgGray400, t.flex, t.itemsCenter, t.pT10]}>
+        <View style={[t.hFull, t.bgBlack, t.flex, t.itemsCenter, t.pT10]}>
             <TouchableOpacity onPress={() => setModalOpen(true)}>
                 <ChargePreview />
             </TouchableOpacity>

@@ -20,7 +20,6 @@ interface ChargeProviderProps {
 const ChargeProvider: React.FC<ChargeProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer<Reducer<ChargeState, ChargeStateAction>>(chargeReducer, initialChargeState)
 
-
     return (
         <ChargeContext.Provider value={{ state, dispatch }}>
             {children}

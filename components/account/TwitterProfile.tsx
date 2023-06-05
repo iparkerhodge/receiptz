@@ -10,7 +10,7 @@ interface TwitterProfileProps {
 const TwitterProfile: React.FC<TwitterProfileProps> = ({ user }) => {
     return (
         <View
-            style={[t.flex, t.flexRow, t.justifyBetween, t.bgGray400, t.w1_2, t.pX2, t.pY5, t.mT5]}
+            style={[t.flex, t.flexRow, t.justifyBetween, t.bgWhite, t.w1_2, t.pX2, t.pY5, t.mT5, t.rounded]}
         >
             <View>
                 <Image

@@ -18,12 +18,6 @@ import Header from './components/Header';
 import UserProvider from './context/userContext';
 import ChargeProvider from './context/chargeContext';
 
-const AddChargeWithProvider = () => (
-  <ChargeProvider>
-    <AddCharge />
-  </ChargeProvider>
-)
-
 SplashScreen.preventAutoHideAsync()
 
 function App() {
@@ -42,17 +36,19 @@ function App() {
   }
 
   return (
-    <SafeAreaView style={[t.bgGray900, t.flex, t.hFull, t.wFull]} onLayout={onLayoutRootView}>
+    <SafeAreaView style={[t.bgBlack, t.flex, t.hFull, t.wFull]} onLayout={onLayoutRootView}>
       <UserProvider>
-        <Header />
-        <Routes>
-          <Route path='/' Component={Home} />
-          <Route path='/search' Component={Search} />
-          <Route path='/addCharge' Component={AddChargeWithProvider} />
-          <Route path='/likes' Component={Likes} />
-          <Route path='/account' Component={Account} />
-        </Routes>
-        <BottomNav />
+        <ChargeProvider>
+          <Header />
+          <Routes>
+            <Route path='/' Component={Home} />
+            <Route path='/search' Component={Search} />
+            <Route path='/addCharge' Component={AddCharge} />
+            <Route path='/likes' Component={Likes} />
+            <Route path='/account' Component={Account} />
+          </Routes>
+          <BottomNav />
+        </ChargeProvider>
       </UserProvider>
     </SafeAreaView>
   );

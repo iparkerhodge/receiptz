@@ -1,4 +1,4 @@
-import { Reducer, createContext, useContext, useReducer } from "react"
+import { Reducer } from "react"
 
 export interface ChargeState {
     title?: string
@@ -91,6 +91,7 @@ export namespace Action {
             index: number
 
             readonly updateState: ChargeStateUpdate = (prevState: ChargeState) => {
+                console.log(this.index)
                 const charges = [...prevState.charges]
                 charges.splice(this.index, 1)
                 return { ...prevState, charges: charges }

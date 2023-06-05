@@ -11,6 +11,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const ChargeCharges: React.FC = () => {
     const { state, dispatch } = useContext(ChargeContext)
+    // TO DO: See if remove is working
     return (
         <View style={{ width: '100%', height: 250, paddingHorizontal: 20 }}>
             <View style={{ paddingTop: 10, width: '100%', display: 'flex', alignItems: 'center' }}>

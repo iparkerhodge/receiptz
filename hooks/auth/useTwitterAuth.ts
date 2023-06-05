@@ -20,14 +20,14 @@ const config = {
     ],
 }
 
-export type TwitterSignUpHook = [
+export type TwitterAuthHook = [
     () => void,
     AuthSession.TokenResponse | undefined,
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
 ];
 
-export default (): TwitterSignUpHook => {
+export default (): TwitterAuthHook => {
     const [request, response, promptAsync] = AuthSession.useAuthRequest(config, discovery)
     const [token, setToken] = useState<AuthSession.TokenResponse | undefined>()
     const [error, setError] = useState(false)

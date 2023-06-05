@@ -3,7 +3,7 @@ import { Text, TextInput, View } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import { ChargeContext } from '../../../context/chargeContext'
 import { Action } from '../../../helpers/charges'
-import { containerStyle, inputStyle } from './Styles'
+import { inputStyle } from './Styles'
 
 const ChargeTitle: React.FC = () => {
     const { state, dispatch } = useContext(ChargeContext)

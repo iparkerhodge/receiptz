@@ -1,10 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { User } from '../types/types'
-import { getUser, storeUser } from '../helpers/users'
+import { getUser, isUserSignedUp, storeUser } from '../helpers/users'
 
 export interface UserContext {
     user: User | undefined
     setUser: React.Dispatch<React.SetStateAction<User | undefined>>
+    userExists: boolean
 }
 
 export const UserContext = createContext<UserContext | null>(null)
@@ -15,29 +16,37 @@ interface UserProviderProps {
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | undefined>()
+    const [userExists, setUserExists] = useState(false)
 
     useEffect(() => {
         if (user) {
-            const storeInAsyncStorage = async () => await storeUser(user)
+            const storeInAsyncStorage = async () => {
+                await storeUser(user)
+                setUserExists(true)
+            }
             // when a user signs up, store in AsyncStorage
             storeInAsyncStorage()
         }
         else {
             // otherwise check if a user is already in AsyncStorage
             // if no user is store, leave undefined
-            const checkForStoredUser = async () => {
-                const storedUser = await getUser()
-                if (storedUser) {
-                    setUser(storedUser)
+            const checkIfUserIsSignedUp = async () => {
+                const id = await isUserSignedUp()
+                if (id) {
+                    setUserExists(true)
+                    const storedUser = await getUser()
+                    if (storedUser) {
+                        setUser(storedUser)
+                    }
                 }
             }
-            checkForStoredUser()
+            checkIfUserIsSignedUp()
         }
 
     }, [user])
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, userExists }}>
             {children}
         </UserContext.Provider>
     )

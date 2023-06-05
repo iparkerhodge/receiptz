@@ -15,7 +15,8 @@ const ChargePreview: React.FC = () => {
                 <ZigzagLines
                     width={width}
                     height={5}
-                    backgroundColor="#cbd5e0"
+                    jagWidth={12}
+                    backgroundColor="black"
                     color="#FFF"
                     position='top' />
             }
@@ -52,7 +53,8 @@ const ChargePreview: React.FC = () => {
                 <ZigzagLines
                     width={width}
                     height={5}
-                    backgroundColor="#cbd5e0"
+                    jagWidth={12}
+                    backgroundColor="black"
                     color="#FFF"
                     position='bottom' />
             }

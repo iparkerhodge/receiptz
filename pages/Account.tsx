@@ -1,14 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { View, Text, TextInput, Button, Platform } from 'react-native'
+import { View, Text, TextInput, Button, Platform, TouchableOpacity } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import Constants from 'expo-constants'
 import axios from 'axios'
 import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session';
-import { User } from '../types/types'
 import { UserContext } from '../context/userContext'
-import useTwitterSignUp from '../hooks/auth/useTwitterSignUp'
 import TwitterProfile from '../components/account/TwitterProfile'
+import useTwitterAuth from '../hooks/auth/useTwitterAuth'
+import { getRefreshToken, signOut } from '../helpers/users'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 if (Constants.manifest) {
     Constants.manifest.originalFullName = '@account/project_name'
@@ -20,18 +20,35 @@ WebBrowser.maybeCompleteAuthSession()
 
 
 const Account = () => {
-    const { user, setUser } = useContext(UserContext) as UserContext
-    const [sign_up, token, error, setError] = useTwitterSignUp()
+    const { user, setUser, userExists } = useContext(UserContext) as UserContext
+    const [signUp, token, error, setError] = useTwitterAuth()
+
+    // dev only; remove this later
+    const clear = async () => {
+        await AsyncStorage.removeItem('@user')
+        await AsyncStorage.removeItem('@account')
+    }
+
+    const logout = async () => {
+        await signOut()
+        setUser(undefined)
+    }
+
+    const login = async () => {
+        const refreshToken = await getRefreshToken()
+        const res = await axios.post(`${api}/login`, { token: { refreshToken: refreshToken } })
+        const user = res.data
+        setUser(user)
+    }
 
     useEffect(() => {
         // if acces token request was successful
-        if (token) {
+        if (token && !userExists) {
             // create the user
             const createUser = async () => {
                 try {
                     const res = await axios.post(`${api}/sign_up`, { token: token })
                     const user = res.data
-                    console.log(user)
                     setUser(user)
                     setError(false)
                 } catch (e) {
@@ -45,11 +62,17 @@ const Account = () => {
     }, [token])
 
     return (
-        <View style={[t.bgWhite, t.hFull, t.itemsCenter]}>
+        <View style={[t.bgBlack, t.hFull, t.itemsCenter]}>
             <View>
-                {user
-                    ? <TwitterProfile user={user} />
-                    : <Text>no user is logged in</Text>
+                {user &&
+                    <TwitterProfile user={user} />
+                }
+                {user &&
+                    <View style={[t.mT4, t.border2, t.borderWhite, t.rounded]}>
+                        <TouchableOpacity style={[t.flex, t.itemsCenter]} onPress={logout}>
+                            <Text style={[t.textWhite, t.fontBold, t.pY2]}>Log me out 👋</Text>
+                        </TouchableOpacity>
+                    </View>
                 }
             </View>
             <View>
@@ -57,12 +80,20 @@ const Account = () => {
                     <Text>There was an error signing you up. Please try again</Text>
                 }
             </View>
-            {user === undefined &&
-                <View>
-                    <Button title='Sign up with Twitter'
-                        onPress={sign_up}
-                    />
-                </View>
+            {user === undefined
+                && (
+                    userExists
+                        ? <View style={[t.mT4, t.border2, t.borderWhite, t.rounded]}>
+                            < TouchableOpacity style={[t.flex, t.itemsCenter]} onPress={login}>
+                                <Text style={[t.textWhite, t.fontBold, t.pY2, t.pX4]}>Log in with Twitter 🐦</Text>
+                            </TouchableOpacity>
+                        </View >
+                        : <View style={[t.mT4, t.border2, t.borderWhite, t.rounded]}>
+                            <TouchableOpacity style={[t.flex, t.itemsCenter]} onPress={signUp}>
+                                <Text style={[t.textWhite, t.fontBold, t.pY2, t.pX4]}>Sign up with Twitter 🐦</Text>
+                            </TouchableOpacity>
+                        </View>
+                )
             }
         </View >
     )
