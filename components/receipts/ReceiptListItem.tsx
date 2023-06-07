@@ -10,9 +10,10 @@ import TooltipMenu from '../tooltipMenu/TooltipMenu'
 interface ReceiptListItemProps {
     receipt: Receipt
     index: number
+    displayPreview: (r: Receipt) => void
 }
 
-const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index }) => {
+const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index, displayPreview }) => {
     const [image, setImage] = useState<string | undefined>()
 
     useEffect(() => {
@@ -37,11 +38,15 @@ const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index }) => 
 
     }
 
+    const handlePreviewPress = () => {
+        displayPreview(receipt)
+    }
+
     return (
-        <View style={[t.wFull, t.bgWhite, t.pX1, t.pB2, t.pT1, t.mY1, t.rounded, { height: 180 }]}>
+        <View style={[t.wFull, t.bgWhite, t.pX1, t.pB2, t.pT1, t.mY1, t.rounded, { height: 160 }]}>
             <View style={[t.flex, t.flexRow, t.justifyEnd]}>
                 <View style={{ width: 24, display: 'flex' }}>
-                    <TooltipMenu items={[{ label: 'Edit', onPress: handlePress }, { label: 'Preview Receipt', onPress: handlePress }]} trianglePosition='right'>
+                    <TooltipMenu items={[{ label: 'Edit', onPress: handlePress }, { label: 'Preview Receipt', onPress: handlePreviewPress }]} trianglePosition='right'>
                         <MoreInfo />
                     </TooltipMenu>
                 </View>

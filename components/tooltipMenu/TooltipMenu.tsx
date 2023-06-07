@@ -71,7 +71,11 @@ const TooltipMenu = ({
         const method = isModalOpen ? hideModal : openModal;
         method();
 
-        onClickItem();
+        const waitForModalClose = () => setTimeout(() => {
+            onClickItem()
+        }, 350)
+
+        waitForModalClose();
     };
 
     const calculatePosition = (event: LayoutChangeEvent) => {
