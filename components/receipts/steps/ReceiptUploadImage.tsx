@@ -5,9 +5,9 @@ import { ReceiptContext } from '../../../context/receiptContext'
 import { Action } from '../../../helpers/receipts'
 import * as ImagePicker from 'expo-image-picker'
 import useUploadFile from '../../../hooks/storage/useUploadFile'
-import { storageFileRef } from '../../../firebase'
+import { storage, storageFileRef } from '../../../firebase'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { deleteObject } from 'firebase/storage'
+import { deleteObject, ref } from 'firebase/storage'
 import { UserContext } from '../../../context/userContext'
 
 const ReceiptUploadImage: React.FC = () => {
@@ -44,7 +44,7 @@ const ReceiptUploadImage: React.FC = () => {
     const pickImage = async () => {
         // if an image is seleced, delete that image than
         if (state.filename) {
-            const imageRef = storageFileRef(`@${user?.twitterUsername}/${state.filename}`)
+            const imageRef = ref(storage, `${state.filename}`)
             const _res = await deleteObject(imageRef)
         }
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Receipt } from '../../types/types'
 import { t } from 'react-native-tailwindcss'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { storage } from '../../firebase'
 import { getDownloadURL, ref } from 'firebase/storage'
+import { Feather } from '@expo/vector-icons'
+import TooltipMenu from '../tooltipMenu/TooltipMenu'
 
 interface ReceiptListItemProps {
     receipt: Receipt
@@ -26,27 +28,39 @@ const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index }) => 
 
     const formatDate = (d: Date) => {
         const date = new Date(d)
-        let newDate = new Date()
-        newDate.setDate(date.getDate() + 1)
-        return newDate.toDateString()
+        return date.toDateString()
+    }
+
+    const MoreInfo = () => <Feather name="more-horizontal" size={18} color="black" />
+
+    const handlePress = () => {
+
     }
 
     return (
-        <View style={[t.wFull, t.bgWhite, t.pX1, t.pY2, t.mY1, t.rounded]}>
+        <View style={[t.wFull, t.bgWhite, t.pX1, t.pB2, t.pT1, t.mY1, t.rounded, { height: 180 }]}>
+            <View style={[t.flex, t.flexRow, t.justifyEnd]}>
+                <View style={{ width: 24, display: 'flex' }}>
+                    <TooltipMenu items={[{ label: 'Edit', onPress: handlePress }, { label: 'Preview Receipt', onPress: handlePress }]} trianglePosition='right'>
+                        <MoreInfo />
+                    </TooltipMenu>
+                </View>
+            </View>
             <View style={[t.flex, t.flexRow]}>
-                {image &&
-                    <Image source={{ uri: image }} style={{ height: 120, width: 80, marginRight: 4, borderRadius: 4 }} />
-                }
+                <View style={{ height: 120, width: 80, marginRight: 4, borderRadius: 4, position: 'relative' }}>
+                    <Image source={{ uri: image }} style={{ height: 120, width: 80, borderRadius: 4, position: 'absolute', top: 0, right: 0 }} />
+                </View>
                 <View style={[t.flex1, t.flex, t.justifyBetween]}>
-                    <View>
+                    <View style={[t.mT3]}>
                         <Text style={[t.fontBold, t.mB1]}>{receipt.title}</Text>
                         {receipt.claims.map((c, i) => {
                             return (
-                                <Text style={[t.textXs, t.mL1]} key={`receipt-${index}-claim-${i}`}>{c}</Text>
+                                <Text style={[t.textXs, t.mL1, t.mB1]} key={`receipt-${index}-claim-${i}`}>{c}</Text>
                             )
                         })}
                     </View>
-                    <View style={[t.flex, t.itemsEnd]}>
+                    <View style={[t.flex, t.flexRow, t.justifyBetween]}>
+                        <Text style={[t.textXs]}>{receipt.accusee}</Text>
                         <Text style={[t.textXs]}>{formatDate(receipt.collectionDate)}</Text>
                     </View>
                 </View>

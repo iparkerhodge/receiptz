@@ -10,7 +10,7 @@ const ReceiptPreview: React.FC = () => {
     const [width, setWidth] = useState<number | undefined>(undefined)
     const { state } = useContext(ReceiptContext)
     return (
-        <View style={[t.w3_4, t.bgWhite]} onLayout={e => setWidth(e.nativeEvent.layout.width)}>
+        <View style={[t.wFull, t.bgWhite, t.flex]} onLayout={e => setWidth(e.nativeEvent.layout.width)}>
             {typeof width == 'number' &&
                 <ZigzagLines
                     width={width}
@@ -20,7 +20,7 @@ const ReceiptPreview: React.FC = () => {
                     color="#FFF"
                     position='top' />
             }
-            <Text style={[t.textCenter, t.mY4, t.fontReceipt, t.text2xl, t.borderB2, t.borderBlack]}>{state.title || 'Title'}</Text>
+            <Text style={[t.textCenter, t.mY4, t.fontReceipt, t.text2xl, t.borderB2, t.borderBlack, t.mX2]}>{state.title || 'Title'}</Text>
             <Text style={[t.mL5, t.mB4, t.fontReceipt]}>Created: {state.dateCreated}</Text>
             <View style={[t.flex, t.itemsCenter, t.mT2]}>
                 {state.selectedImage &&

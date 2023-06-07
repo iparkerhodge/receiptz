@@ -11,7 +11,7 @@ export default BottomNav = () => {
     const { user } = useContext(UserContext)
     return (
         <BlurView style={[t.absolute, t.bottom0, t.left0, t.wFull, t.flex]} blurType="dark">
-            <View style={[t.flex1, t.flex, t.flexRow, t.mX2, t.rounded]}>
+            <View style={[t.flex1, t.flex, t.flexRow, t.rounded]}>
                 <Link to="/" style={[t.flex1]} component={TouchableOpacity}>
                     <View style={[t.pX8, t.pY6, t.flex, t.itemsCenter]}>
                         <FontAwesomeIcon size={20} icon={faHome} style={[t.textWhite]} />

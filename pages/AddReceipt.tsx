@@ -56,9 +56,11 @@ const AddReceipt = () => {
     return (
         <View style={[t.hFull, t.bgBlack, t.flex, t.itemsCenter, t.pT10]}>
             <ScrollView style={[t.wFull]} contentContainerStyle={[t.flex, t.itemsCenter]}>
-                <TouchableOpacity onPress={() => setModalOpen(true)}>
-                    <ReceiptPreview />
-                </TouchableOpacity>
+                <View style={[t.w3_4, t.flex, t.itemsCenter]}>
+                    <TouchableOpacity onPress={() => setModalOpen(true)} style={[t.wFull]}>
+                        <ReceiptPreview />
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
             {modalOpen &&
                 <View style={[t.wFull, t.hFull, t.bgBlack, t.opacity25, t.absolute, t.top0]} />
