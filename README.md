@@ -66,7 +66,6 @@ React & Typescript:
 
 ## Coming Soon
 Features:
-- Edit saved receipts
 - In-app notifications on reminder date
 - Save to camera roll
 - Post to twitter
