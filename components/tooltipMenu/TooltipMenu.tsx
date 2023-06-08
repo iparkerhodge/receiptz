@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import { TooltipMenuItem } from './TooltipMenuItem';
 
-type TrianglePosition = 'left' | 'center' | 'right';
 type Props = {
     children: ReactNode;
     items: {
@@ -27,7 +26,6 @@ type Props = {
     modalButtonStyle?: ViewStyle;
     labelStyle?: ViewStyle;
     onRequestClose?: () => void;
-    trianglePosition?: TrianglePosition;
 };
 
 const TooltipMenu = ({
@@ -39,7 +37,6 @@ const TooltipMenu = ({
     labelStyle,
     modalButtonStyle,
     onRequestClose,
-    trianglePosition,
 }: Props) => {
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
     const buttonRef = createRef<View>();

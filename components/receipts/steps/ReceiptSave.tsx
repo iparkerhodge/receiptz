@@ -2,14 +2,15 @@ import React, { useContext } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import { ReceiptContext } from '../../../context/receiptContext'
-import { ReceiptData, submitData } from '../../../helpers/receipts'
+import { Action, ReceiptData, submitData } from '../../../helpers/receipts'
 import { Ionicons } from '@expo/vector-icons'
 import { UserContext } from '../../../context/userContext'
-import { redirect } from 'react-router-native'
+import { useNavigate } from 'react-router-native'
 
 const ReceiptSave: React.FC = () => {
     const { user } = useContext(UserContext) as UserContext
-    const { state } = useContext(ReceiptContext)
+    const { state, dispatch } = useContext(ReceiptContext)
+    const navigate = useNavigate()
 
     const composeData = (): ReceiptData => {
         const data: ReceiptData = {
@@ -31,7 +32,8 @@ const ReceiptSave: React.FC = () => {
         const res = await submitData(data)
 
         if (res?.data) {
-            return redirect("/receipts")
+            dispatch(new Action.ClearReceipt)
+            return navigate("/receipts")
         }
     }
 

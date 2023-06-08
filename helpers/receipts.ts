@@ -5,6 +5,7 @@ import { Receipt, User } from "../types/types"
 
 // STATE
 export interface ReceiptState {
+    id?: number
     title: string
     dateCreated: string
     accusee: string
@@ -120,6 +121,30 @@ export namespace Action {
             this.date = date
         }
     }
+    export class ClearReceipt implements ReceiptStateAction {
+        readonly updateState: ReceiptStateUpdate = (_prevState: ReceiptState) => {
+            return initialReceiptState
+        }
+    }
+    export class SetForEdit implements ReceiptStateAction {
+        receipt: Receipt
+
+        readonly updateState: ReceiptStateUpdate = (_prevState: ReceiptState) => {
+            return {
+                id: this.receipt.id,
+                title: this.receipt.title,
+                dateCreated: new Date(this.receipt.createdAt).toDateString(),
+                accusee: this.receipt.accusee,
+                filename: this.receipt.imageUrl,
+                claims: this.receipt.claims,
+                collectDate: this.receipt.collectionDate
+            }
+        }
+
+        constructor(receipt: Receipt) {
+            this.receipt = receipt
+        }
+    }
 }
 
 const initialCollectDate = new Date(2026, 1, 9)
@@ -138,6 +163,7 @@ export const initialReceiptState: ReceiptState = {
 }
 
 export interface ReceiptData {
+    id?: number
     title: string
     accusee: string
     claims: string[]
@@ -153,4 +179,14 @@ const api = `http://127.0.0.1:3000`
 export const submitData = async (data: ReceiptData) => {
     const res = await axios.post<Receipt>(`${api}/receipts`, { receipt: data })
     return res
+}
+
+export const updateReceipt = async (data: ReceiptData): Promise<Receipt> => {
+    const res = await axios.post<Receipt>(`${api}/receipts/${data.id}`, { receipt: data })
+    return res.data
+}
+
+export const getReceipts = async (userId: number): Promise<Receipt[]> => {
+    const res = await axios.get<Receipt[]>(`${api}/receipts/${userId}/list`)
+    return res.data
 }
