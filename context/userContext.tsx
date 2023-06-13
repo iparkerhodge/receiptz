@@ -20,15 +20,15 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (user) {
-            const storeInAsyncStorage = async () => {
+            const storeInSecureStorage = async () => {
                 await storeUser(user)
                 setUserExists(true)
             }
-            // when a user signs up, store in AsyncStorage
-            storeInAsyncStorage()
+            // when a user signs up, store in Secure Storage
+            storeInSecureStorage()
         }
         else {
-            // otherwise check if a user is already in AsyncStorage
+            // otherwise check if a user is already in Secure Storage
             // if no user is store, leave undefined
             const checkIfUserIsSignedUp = async () => {
                 const id = await isUserSignedUp()

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { View, Text, ScrollView, Modal, KeyboardAvoidingView, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, ScrollView, Modal, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native'
 import { Receipt } from '../types/types'
 import { UserContext } from '../context/userContext'
 import { ReceiptContext } from '../context/receiptContext'
@@ -43,9 +43,11 @@ const Receipts = () => {
         showEdit({ index: index, receipt: receipt })
     }
 
+    // TO DO: move to helpers/receipts.ts
     const deleteReceipt = async (index: number, receipt: Receipt) => {
         try {
-            const res = await axios.delete(`${api}/receipts/${receipt.id}`)
+            const headers = { 'Authorization': `Bearer ${user?.receiptzToken}` }
+            const res = await axios.delete(`${api}/receipts/${receipt.id}`, { headers: headers })
             if (res.status === 200) {
                 const receiptsArr = [...receipts]
                 receiptsArr.splice(index, 1)
@@ -60,7 +62,7 @@ const Receipts = () => {
     useEffect(() => {
         if (receipts.length === 0) {
             const fetchReceipts = async () => {
-                const receipts = await getReceipts(user?.id as number)
+                const receipts = await getReceipts(user?.id as number, user?.receiptzToken as string)
                 setReceipts(receipts)
             }
             fetchReceipts()
@@ -201,7 +203,7 @@ export const ReceiptEdit: React.FC<IReceiptModal> = ({ onClose, index, receipts,
             imageUrl: state.filename,
             userId: user?.id as number
         }
-        const updatedReceipt = await updateReceipt(data)
+        const updatedReceipt = await updateReceipt(data, user?.receiptzToken as string)
         if (index && receipts && receipts.length && receipts.length > 0 && setReceipts) {
             const array = [...receipts]
             array[index] = updatedReceipt

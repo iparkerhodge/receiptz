@@ -7,6 +7,7 @@ export interface User {
     accessToken: string
     accessTokenIssuedAt: string
     refreshToken: string
+    receiptzToken: string
 }
 
 export interface Receipt {

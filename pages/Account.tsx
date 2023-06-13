@@ -8,7 +8,7 @@ import { UserContext } from '../context/userContext'
 import TwitterProfile from '../components/account/TwitterProfile'
 import useTwitterAuth from '../hooks/auth/useTwitterAuth'
 import { getRefreshToken, signOut } from '../helpers/users'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store';
 
 if (Constants.manifest) {
     Constants.manifest.originalFullName = '@account/project_name'
@@ -25,8 +25,8 @@ const Account = () => {
 
     // dev only; remove this later
     const clear = async () => {
-        await AsyncStorage.removeItem('@user')
-        await AsyncStorage.removeItem('@account')
+        await SecureStore.deleteItemAsync('current_user')
+        await SecureStore.deleteItemAsync('account')
     }
 
     const logout = async () => {
@@ -35,6 +35,7 @@ const Account = () => {
     }
 
     const login = async () => {
+        await clear()
         const refreshToken = await getRefreshToken()
         const res = await axios.post(`${api}/login`, { token: { refreshToken: refreshToken } })
         const user = res.data

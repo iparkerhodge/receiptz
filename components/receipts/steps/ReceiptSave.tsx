@@ -29,7 +29,7 @@ const ReceiptSave: React.FC = () => {
 
     const handleSave = async () => {
         const data = composeData()
-        const res = await submitData(data)
+        const res = await submitData(data, user?.receiptzToken as string)
 
         if (res?.data) {
             dispatch(new Action.ClearReceipt)

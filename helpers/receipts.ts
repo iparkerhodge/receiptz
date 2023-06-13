@@ -176,17 +176,20 @@ export interface ReceiptData {
 
 const api = `http://127.0.0.1:3000`
 
-export const submitData = async (data: ReceiptData) => {
-    const res = await axios.post<Receipt>(`${api}/receipts`, { receipt: data })
+export const submitData = async (data: ReceiptData, token: string) => {
+    const headers = { 'Authorization': `Bearer ${token}` }
+    const res = await axios.post<Receipt>(`${api}/receipts`, { receipt: data }, { headers: headers })
     return res
 }
 
-export const updateReceipt = async (data: ReceiptData): Promise<Receipt> => {
-    const res = await axios.post<Receipt>(`${api}/receipts/${data.id}`, { receipt: data })
+export const updateReceipt = async (data: ReceiptData, token: string): Promise<Receipt> => {
+    const headers = { 'Authorization': `Bearer ${token}` }
+    const res = await axios.post<Receipt>(`${api}/receipts/${data.id}`, { receipt: data }, { headers: headers })
     return res.data
 }
 
-export const getReceipts = async (userId: number): Promise<Receipt[]> => {
-    const res = await axios.get<Receipt[]>(`${api}/receipts/${userId}/list`)
+export const getReceipts = async (userId: number, token: string): Promise<Receipt[]> => {
+    const headers = { 'Authorization': `Bearer ${token}` }
+    const res = await axios.get<Receipt[]>(`${api}/receipts/${userId}/list`, { headers: headers })
     return res.data
 }
