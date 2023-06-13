@@ -27,7 +27,10 @@ export default {
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.parkerhodge.receiptz"
+      "bundleIdentifier": "com.parkerhodge.receiptz",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
