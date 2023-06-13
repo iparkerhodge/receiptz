@@ -19,8 +19,6 @@ import ReceiptClaims from '../components/receipts/steps/ReceiptClaims'
 import ReceiptUploadImage from '../components/receipts/steps/ReceiptUploadImage'
 import ReceiptCollectDate from '../components/receipts/steps/ReceiptCollectDate'
 import ReceiptSave from '../components/receipts/steps/ReceiptSave'
-import { Loading } from '../components/Loading'
-
 
 const api = `http://127.0.0.1:3000`
 
@@ -45,6 +43,20 @@ const Receipts = () => {
         showEdit({ index: index, receipt: receipt })
     }
 
+    const deleteReceipt = async (index: number, receipt: Receipt) => {
+        try {
+            const res = await axios.delete(`${api}/receipts/${receipt.id}`)
+            if (res.status === 200) {
+                const receiptsArr = [...receipts]
+                receiptsArr.splice(index, 1)
+                setReceipts(receiptsArr)
+            }
+        }
+        catch (e) {
+            throw new Error(`Unable to delete receipt: ${e}`)
+        }
+    }
+
     useEffect(() => {
         if (receipts.length === 0) {
             const fetchReceipts = async () => {
@@ -62,7 +74,7 @@ const Receipts = () => {
     return (
         <>
             <ScrollView style={[t.wFull, t.pT4]} contentContainerStyle={[t.flex, t.itemsCenter]}>
-                {receipts.map((r: Receipt, i: number) => <ReceiptListItem receipt={r} index={i} key={i} displayPreview={displayPreview} displayEdit={displayEdit} />)}
+                {receipts.map((r: Receipt, i: number) => <ReceiptListItem receipt={r} index={i} key={i} displayPreview={displayPreview} displayEdit={displayEdit} deleteReceipt={deleteReceipt} />)}
             </ScrollView>
             {(preview || edit) &&
                 <View style={[t.wFull, t.hFull, t.bgBlack, t.opacity25, t.absolute, t.top0]} />

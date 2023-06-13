@@ -6,15 +6,19 @@ import { storage } from '../../firebase'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { Feather } from '@expo/vector-icons'
 import TooltipMenu from '../tooltipMenu/TooltipMenu'
+import axios from 'axios'
+
+const api = `http://127.0.0.1:3000`
 
 interface ReceiptListItemProps {
     receipt: Receipt
     index: number
     displayPreview: (r: Receipt) => void
     displayEdit: (i: number, r: Receipt) => void
+    deleteReceipt: (i: number, r: Receipt) => void
 }
 
-const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index, displayPreview, displayEdit }) => {
+const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index, displayPreview, displayEdit, deleteReceipt }) => {
     const [image, setImage] = useState<string | undefined>()
 
     useEffect(() => {
@@ -43,11 +47,19 @@ const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt, index, displ
         displayEdit(index, receipt)
     }
 
+    const handleDeletePress = async () => {
+        await deleteReceipt(index, receipt)
+    }
+
     return (
         <View style={[t.wFull, t.bgWhite, t.pX1, t.pB2, t.pT1, t.mY1, t.rounded, { height: 160 }]}>
             <View style={[t.flex, t.flexRow, t.justifyEnd]}>
                 <View style={{ width: 24, display: 'flex' }}>
-                    <TooltipMenu items={[{ label: 'Edit', onPress: handleEditPress }, { label: 'Preview Receipt', onPress: handlePreviewPress }]} trianglePosition='right'>
+                    <TooltipMenu items={[
+                        { label: 'Edit', onPress: handleEditPress },
+                        { label: 'Preview Receipt', onPress: handlePreviewPress },
+                        { label: 'Delete', onPress: handleDeletePress }
+                    ]} trianglePosition='right'>
                         <MoreInfo />
                     </TooltipMenu>
                 </View>
