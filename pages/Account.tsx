@@ -1,14 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { t } from 'react-native-tailwindcss'
 import Constants from 'expo-constants'
 import axios from 'axios'
-import * as WebBrowser from 'expo-web-browser';
 import { UserContext } from '../context/userContext'
-import TwitterProfile from '../components/account/TwitterProfile'
-import useTwitterAuth from '../hooks/auth/useTwitterAuth'
-import { getRefreshToken, signOut } from '../helpers/users'
+import { signOut } from '../helpers/users'
 import * as SecureStore from 'expo-secure-store';
+import SignUpForm from '../components/account/SignUpForm'
 
 if (Constants.manifest) {
     Constants.manifest.originalFullName = '@account/project_name'
@@ -16,12 +14,8 @@ if (Constants.manifest) {
 
 const api = `http://127.0.0.1:3000`
 
-WebBrowser.maybeCompleteAuthSession()
-
-
 const Account = () => {
-    const { user, setUser, userExists } = useContext(UserContext) as UserContext
-    const [signUp, token, error, setError] = useTwitterAuth()
+    const { user, setUser, userStatus } = useContext(UserContext) as UserContext
 
     // dev only; remove this later
     const clear = async () => {
@@ -34,68 +28,16 @@ const Account = () => {
         setUser(undefined)
     }
 
-    const login = async () => {
-        await clear()
-        const refreshToken = await getRefreshToken()
-        const res = await axios.post(`${api}/login`, { token: { refreshToken: refreshToken } })
-        const user = res.data
-        setUser(user)
+    const submitSignUp = async (data: { name: string, password: string, mobileNumber: string }) => {
+        const res = await axios.post(`${api}/sign_up`, data)
+        setUser(res.data)
     }
-
-    useEffect(() => {
-        // if acces token request was successful
-        if (token && !userExists) {
-            // create the user
-            const createUser = async () => {
-                try {
-                    const res = await axios.post(`${api}/sign_up`, { token: token })
-                    const user = res.data
-                    setUser(user)
-                    setError(false)
-                } catch (e) {
-                    setError(true)
-                    throw new Error('there was a problem creating your account')
-                }
-            }
-
-            createUser()
-        }
-    }, [token])
 
     return (
         <View style={[t.bgBlack, t.hFull, t.itemsCenter]}>
-            <View>
-                {user &&
-                    <TwitterProfile user={user} />
-                }
-                {user &&
-                    <View style={[t.mT4, t.border2, t.borderWhite, t.rounded]}>
-                        <TouchableOpacity style={[t.flex, t.itemsCenter]} onPress={logout}>
-                            <Text style={[t.textWhite, t.fontBold, t.pY2]}>Log me out 👋</Text>
-                        </TouchableOpacity>
-                    </View>
-                }
+            <View style={[t.w1_2]}>
+                <SignUpForm onSubmit={submitSignUp} />
             </View>
-            <View>
-                {error &&
-                    <Text>There was an error signing you up. Please try again</Text>
-                }
-            </View>
-            {user === undefined
-                && (
-                    userExists
-                        ? <View style={[t.mT4, t.border2, t.borderWhite, t.rounded]}>
-                            < TouchableOpacity style={[t.flex, t.itemsCenter]} onPress={login}>
-                                <Text style={[t.textWhite, t.fontBold, t.pY2, t.pX4]}>Log in with Twitter 🐦</Text>
-                            </TouchableOpacity>
-                        </View >
-                        : <View style={[t.mT4, t.border2, t.borderWhite, t.rounded]}>
-                            <TouchableOpacity style={[t.flex, t.itemsCenter]} onPress={signUp}>
-                                <Text style={[t.textWhite, t.fontBold, t.pY2, t.pX4]}>Sign up with Twitter 🐦</Text>
-                            </TouchableOpacity>
-                        </View>
-                )
-            }
         </View >
     )
 }

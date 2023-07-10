@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import { NativeRouter, Route, Routes } from 'react-router-native';
 import { t } from 'react-native-tailwindcss';
@@ -17,6 +17,8 @@ import Account from './pages/Account';
 import Header from './components/Header';
 import UserProvider from './context/userContext';
 import ReceiptProvider from './context/receiptContext';
+import { UserStatus } from './types/types';
+import { checkUserStatus } from './helpers/users';
 
 SplashScreen.preventAutoHideAsync()
 

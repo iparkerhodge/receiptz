@@ -44,7 +44,7 @@ const ReceiptPreview: React.FC = () => {
             </View>
             <View style={[t.mY5, t.flex, t.itemsCenter]}>
                 <Text style={[t.fontReceipt]}>Vendor:</Text>
-                <Text style={[t.fontReceipt]}>{user?.twitterName || 'Your Name'}</Text>
+                <Text style={[t.fontReceipt]}>{user?.name || 'Your Name'}</Text>
             </View>
             <View style={[t.mT6, t.mB4]}>
                 <Text style={[t.mX2, t.fontReceipt, t.textCenter]}>Processed by <Text style={[t.underline]}>Receiptz</Text>, the app to track bets, wagers, and absurd predictions</Text>

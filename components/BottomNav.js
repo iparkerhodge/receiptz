@@ -34,10 +34,7 @@ export default BottomNav = () => {
                 </Link>
                 <Link to="/account" style={[t.flex1]} component={TouchableOpacity}>
                     <View style={[t.pX8, t.pY6, t.flex, t.itemsCenter]}>
-                        {user
-                            ? <Image source={{ uri: user.twitterProfileImage }} style={{ height: 24, width: 24, borderRadius: 12 }} />
-                            : <FontAwesomeIcon size={20} icon={faUser} style={[t.textWhite]} />
-                        }
+                        <FontAwesomeIcon size={20} icon={faUser} style={[t.textWhite]} />
                     </View>
                 </Link>
             </View>

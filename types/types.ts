@@ -1,13 +1,14 @@
 export interface User {
     id: number
-    twitterId: string
-    twitterUsername: string
-    twitterName: string
-    twitterProfileImage?: string
-    accessToken: string
-    accessTokenIssuedAt: string
-    refreshToken: string
+    name: string
+    mobile_number: string
     receiptzToken: string
+}
+
+export enum UserStatus {
+    NOT_EXISTS = 'not_exists',
+    EXISTS = 'exists',
+    SIGNED_IN = 'signed_in'
 }
 
 export interface Receipt {

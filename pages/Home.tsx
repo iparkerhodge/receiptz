@@ -4,9 +4,10 @@ import { t } from 'react-native-tailwindcss';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusSquare, faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../context/userContext';
+import { UserStatus } from '../types/types';
 
 const Home = () => {
-    const { user, userExists } = useContext<UserContext | null>(UserContext) as UserContext
+    const { user, userStatus } = useContext<UserContext | null>(UserContext) as UserContext
     return (
         <View style={[t.bgBlack, t.hFull, t.pB20, t.flex, t.justifyCenter, t.itemsCenter]}>
             <View style={[t.itemsCenter]}>
@@ -21,7 +22,7 @@ const Home = () => {
                 }
                 {user
                     ? <Text style={[t.mL2, t.textWhite]}>create a receipt</Text>
-                    : <Text style={[t.mL2, t.textWhite]}>to {userExists ? 'login' : 'sign up'}</Text>
+                    : <Text style={[t.mL2, t.textWhite]}>to {userStatus === UserStatus.EXISTS ? 'login' : 'sign up'}</Text>
                 }
             </View>
             <View style={[t.mT20]} />

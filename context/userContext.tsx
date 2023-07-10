@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { User } from '../types/types'
-import { getUser, isUserSignedUp, storeUser } from '../helpers/users'
+import { User, UserStatus } from '../types/types'
+import { checkUserStatus, getUser, isUserSignedUp, storeUser } from '../helpers/users'
 
 export interface UserContext {
     user: User | undefined
     setUser: React.Dispatch<React.SetStateAction<User | undefined>>
-    userExists: boolean
+    userStatus: UserStatus | undefined
 }
 
 export const UserContext = createContext<UserContext | null>(null)
@@ -16,37 +16,40 @@ interface UserProviderProps {
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | undefined>()
-    const [userExists, setUserExists] = useState(false)
+    const [userStatus, setUserStatus] = useState<UserStatus | undefined>()
 
     useEffect(() => {
-        if (user) {
+        const checkStatus = async (): Promise<void> => {
+            const status = await checkUserStatus()
+            setUserStatus(status)
+        }
+
+        if (!user) {
+            checkStatus()
+        }
+        else {
             const storeInSecureStorage = async () => {
                 await storeUser(user)
-                setUserExists(true)
+                setUserStatus(UserStatus.SIGNED_IN)
             }
             // when a user signs up, store in Secure Storage
             storeInSecureStorage()
         }
-        else {
-            // otherwise check if a user is already in Secure Storage
-            // if no user is store, leave undefined
-            const checkIfUserIsSignedUp = async () => {
-                const id = await isUserSignedUp()
-                if (id) {
-                    setUserExists(true)
-                    const storedUser = await getUser()
-                    if (storedUser) {
-                        setUser(storedUser)
-                    }
-                }
-            }
-            checkIfUserIsSignedUp()
-        }
-
     }, [user])
 
+    useEffect(() => {
+        if (userStatus === UserStatus.SIGNED_IN && !user) {
+            const retrieveUser = async () => {
+                const storedUser = await getUser()
+                setUser(storedUser)
+            }
+
+            retrieveUser()
+        }
+    }, [userStatus])
+
     return (
-        <UserContext.Provider value={{ user, setUser, userExists }}>
+        <UserContext.Provider value={{ user, setUser, userStatus }}>
             {children}
         </UserContext.Provider>
     )
